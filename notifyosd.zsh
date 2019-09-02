@@ -1,8 +1,5 @@
 # commands to ignore
-cmdignore=(htop tmux top vim)
-
-# set gt 0 to enable GNU units for time results
-gnuunits=0
+cmdignore=(htop tmux top vim vi fg)
 
 # Function taken from undistract-me, get the current window id
 function active_window_id () {
@@ -27,29 +24,20 @@ function notifyosd-precmd() {
         if [ ! -z "$cmd" -a $cmd_secs -gt 10 ] && [[ "$cmd_active_win" != "$(active_window_id)" ]]; then
             if [ $retval -gt 0 ]; then
                 cmdstat="with warning"
-                sndstat="/usr/share/sounds/gnome/default/alerts/sonar.ogg"
                 urgency="critical"
             else
                 cmdstat="successfully"
-                sndstat="/usr/share/sounds/gnome/default/alerts/glass.ogg"
                 urgency="normal"
             fi
 
-            if [ $gnuunits -gt 0 ]; then
-                cmd_time=$(units "$cmd_secs seconds" "centuries;years;months;weeks;days;hours;minutes;seconds" | \
-                        sed -e 's/\ +/\,/g' -e s'/\t//')
-            else
-                cmd_time="$cmd_secs seconds"
-            fi
+            cmd_time="$cmd_secs seconds"
 
             if [ ! -z $SSH_TTY ] ; then
                 notify-send -i utilities-terminal \
-                        -u $urgency "$cmd_basename on $(hostname) completed $cmdstat" "\"$cmd\" took $cmd_time"; \
-                        play -q $sndstat
+                        -u $urgency "$cmd_basename on $(hostname) completed $cmdstat" "\"$cmd\" took $cmd_time" 
             else
                 notify-send -i utilities-terminal \
-                        -u $urgency "$cmd_basename completed $cmdstat" "\"$cmd\" took $cmd_time"; \
-                        play -q $sndstat
+                        -u $urgency "$cmd_basename completed $cmdstat" "\"$cmd\" took $cmd_time" 
             fi
         fi
         unset cmd
