@@ -35,7 +35,7 @@ function active_tmux_session() {
 # Function taken from undistract-me, get the current window id
 function active_window_id() {
     if [[ -n $DISPLAY ]] ; then
-        xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}'
+        xprop -root _NET_ACTIVE_WINDOW 2>/dev/null | awk '{print $5}'
         return
     fi
     echo nowindowid
