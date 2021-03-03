@@ -1,3 +1,11 @@
+# To be sourced
+
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] || [ -n "$SSH_CONNECTION" ]; then
+    # Do not activate notifications from inside an SSH session. Though, it could
+    # actually work using X if it is configured correctly.
+    return
+fi
+
 # Default timeout is 10 seconds.
 LONG_RUNNING_COMMAND_TIMEOUT=${LONG_RUNNING_COMMAND_TIMEOUT:-10}
 
